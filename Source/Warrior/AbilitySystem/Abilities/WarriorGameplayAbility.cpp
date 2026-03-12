@@ -1,0 +1,35 @@
+// Project Made by Akhil Mathew Mathew @TheRAVAGE as a part of UDEMY course : Unreal Engine 5 C++ Advanced Action RPG by Vince Petrelli
+
+
+#include "Warrior/AbilitySystem/Abilities/WarriorGameplayAbility.h"
+
+#include "AbilitySystemComponent.h"
+
+void UWarriorGameplayAbility::OnGiveAbility(const FGameplayAbilityActorInfo* ActorInfo,
+                                            const FGameplayAbilitySpec& Spec)
+{
+	Super::OnGiveAbility(ActorInfo, Spec);
+	
+	if (ActivationPolicy == EWarriorAbilityActivationPolicy::OnGiven)
+	{
+		if (ActorInfo && !Spec.IsActive())
+		{
+			ActorInfo->AbilitySystemComponent->TryActivateAbility(Spec.Handle);
+		}
+	}
+}
+
+void UWarriorGameplayAbility::EndAbility(const FGameplayAbilitySpecHandle Handle,
+	const FGameplayAbilityActorInfo* ActorInfo, const FGameplayAbilityActivationInfo ActivationInfo,
+	bool bReplicateEndAbility, bool bWasCancelled)
+{
+	Super::EndAbility(Handle, ActorInfo, ActivationInfo, bReplicateEndAbility, bWasCancelled);
+	
+	if (ActivationPolicy == EWarriorAbilityActivationPolicy::OnGiven)
+	{
+		if (ActorInfo)
+		{
+			ActorInfo->AbilitySystemComponent->ClearAbility(Handle);
+		}
+	}
+}

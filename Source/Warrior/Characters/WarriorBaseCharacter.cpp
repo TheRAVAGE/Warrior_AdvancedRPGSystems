@@ -31,6 +31,7 @@ void AWarriorBaseCharacter::PossessedBy(AController* NewController)
 	if (WarriorAbilitySystemComponent)
 	{
 		WarriorAbilitySystemComponent->InitAbilityActorInfo(this, this);
+		ensureMsgf(!CharacterStartUpData.IsNull(), TEXT("CharacterStartUpData is null. Please assign a valid Data Asset StartUpDataBase to the CharacterStartUpData property of %s"), *GetName());
 	}
 }
 
