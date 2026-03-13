@@ -7,11 +7,13 @@
 
 #include "WarriorHeroCharacter.generated.h"
 
+struct FGameplayTag;
 struct FInputActionValue;
 class UCameraComponent;
 class USpringArmComponent;
 class UDataAsset_InputConfig;
 class UInputComponent;
+class UHeroCombatComponent;
 /**
  *
  */
@@ -40,6 +42,9 @@ private:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Camera", meta = (AllowPrivateAccess = "true"))
 	UCameraComponent* Camera;
 	
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Combat", meta = (AllowPrivateAccess = "true"))
+	UHeroCombatComponent* HeroCombatComponent;
+	
 #pragma endregion
 	
 #pragma region Inputs
@@ -49,5 +54,11 @@ private:
 	
 	void Input_Move(const FInputActionValue& InputActionValue);
 	void Input_Look(const FInputActionValue& InputActionValue);
+	
+	void Input_ABilityInputPressed(FGameplayTag InInputTag);
+	void Input_ABilityInputReleased(FGameplayTag InInputTag);
 #pragma endregion
+	
+public:
+	FORCEINLINE UHeroCombatComponent* GetHeroCombatComponent() const { return HeroCombatComponent; }
 };

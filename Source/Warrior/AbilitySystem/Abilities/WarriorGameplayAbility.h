@@ -6,6 +6,8 @@
 #include "Abilities/GameplayAbility.h"
 #include "WarriorGameplayAbility.generated.h"
 
+class UWarriorAbilitySystemComponent;
+class UPawnCombatComponent;
 /**
  * 
  */
@@ -27,6 +29,14 @@ protected:
 	virtual void EndAbility(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo, const FGameplayAbilityActivationInfo ActivationInfo, bool bReplicateEndAbility, bool bWasCancelled) override;
 	//~ End UGameplayAbility Interface
 	
-	UPROPERTY(EditDefaultsOnly, Category = "WarriorAbility")
+	UPROPERTY(EditDefaultsOnly, Category = "Warrior | Ability")
 	TEnumAsByte<EWarriorAbilityActivationPolicy> ActivationPolicy = EWarriorAbilityActivationPolicy::OnTriggered;
+	
+	UFUNCTION(BlueprintPure, Category = "Warrior | Ability")
+	UPawnCombatComponent* GetCombatComponentFromActorInfo() const;
+	
+	UFUNCTION(BlueprintPure, Category = "Warrior | Ability")
+	UWarriorAbilitySystemComponent* GetWarriorAbilitySystemComponentFromActorInfo() const;
+	
+	
 };

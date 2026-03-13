@@ -3,3 +3,17 @@
 
 #include "Warrior/AbilitySystem/WarriorAbilitySystemComponent.h"
 
+void UWarriorAbilitySystemComponent::OnAbilityInputPressed(const FGameplayTag& InInputTag)
+{
+	if (!InInputTag.IsValid()) { return; }
+	
+	for (const FGameplayAbilitySpec& Spec: GetActivatableAbilities())
+	{
+		if (!Spec.GetDynamicSpecSourceTags().HasTagExact(InInputTag)) { continue; }
+		TryActivateAbility(Spec.Handle);
+	}
+}
+
+void UWarriorAbilitySystemComponent::OnAbilityInputReleased(const FGameplayTag& InInputTag)
+{
+}

@@ -14,6 +14,7 @@
 #include "Warrior/WarriorGameplayTags.h"
 #include "Warrior/AbilitySystem/WarriorAbilitySystemComponent.h"
 #include "Warrior/DataAssets/StartUpData/DataAsset_StartUpDataBase.h"
+#include "Warrior/Components/Combat/HeroCombatComponent.h"
 
 #include "Warrior/DebugHelper.h"
 
@@ -39,6 +40,8 @@ AWarriorHeroCharacter::AWarriorHeroCharacter()
 	GetCharacterMovement()->RotationRate = FRotator(0.0f, 500.0f, 0.0f);
 	GetCharacterMovement()->MaxWalkSpeed = 400.0f;
 	GetCharacterMovement()->BrakingDecelerationWalking = 2000.0f;
+	
+	HeroCombatComponent = CreateDefaultSubobject<UHeroCombatComponent>("HeroCombatComponent");
 }
 
 void AWarriorHeroCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
@@ -56,6 +59,8 @@ void AWarriorHeroCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInp
 	UWarriorInputComponent* WarriorInputComponent = CastChecked<UWarriorInputComponent>(PlayerInputComponent);
 	WarriorInputComponent->BindNativeInputAction(InputConfigDataAsset,WarriorGameplayTags::Input_Move,ETriggerEvent::Triggered,this,&ThisClass::Input_Move);
 	WarriorInputComponent->BindNativeInputAction(InputConfigDataAsset,WarriorGameplayTags::Input_Look,ETriggerEvent::Triggered,this,&ThisClass::Input_Look);
+	
+	WarriorInputComponent->BindAbilityInputAction(InputConfigDataAsset, this, &ThisClass::Input_ABilityInputPressed, &ThisClass::Input_ABilityInputReleased);
 }
 
 void AWarriorHeroCharacter::BeginPlay()
@@ -99,4 +104,14 @@ void AWarriorHeroCharacter::Input_Look(const FInputActionValue& InputActionValue
 	if (LookAxisVector.Y!= 0.f) {AddControllerPitchInput(LookAxisVector.Y);}
 	if (LookAxisVector.X!= 0.f) {AddControllerYawInput(LookAxisVector.X);}
 	
+}
+
+void AWarriorHeroCharacter::Input_ABilityInputPressed(FGameplayTag InInputTag)
+{
+	WarriorAbilitySystemComponent->OnAbilityInputPressed(InInputTag);
+}
+
+void AWarriorHeroCharacter::Input_ABilityInputReleased(FGameplayTag InInputTag)
+{
+	WarriorAbilitySystemComponent->OnAbilityInputReleased(InInputTag);
 }

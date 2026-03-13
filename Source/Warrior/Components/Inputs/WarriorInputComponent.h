@@ -34,6 +34,24 @@ public:
 		}
 	}
 	
+	template<class UserObject, typename CallbackFunc>
+	void BindAbilityInputAction(
+		UDataAsset_InputConfig* InInputConfig, /* DataAsset */
+		UserObject* ContextObject, /* Context */
+		CallbackFunc InputPressedFunc, /* Function to call on Started */
+		CallbackFunc InputReleasedFunc /* Function to call on Completed */
+		)
+	{
+		checkf(InInputConfig, TEXT("InputConfig is nullptr"));
+		for (const FWarriorInputActionConfig& AbilityInputConfig : InInputConfig->AbilityInputActions)
+		{
+			if (!AbilityInputConfig.IsValid()) {continue;}
+			
+			BindAction(AbilityInputConfig.InputAction, ETriggerEvent::Started, ContextObject, InputPressedFunc, AbilityInputConfig.InputTag);
+			BindAction(AbilityInputConfig.InputAction, ETriggerEvent::Completed, ContextObject, InputReleasedFunc, AbilityInputConfig.InputTag);
+		}
+	}
+	
 };
 
 
