@@ -4,12 +4,10 @@
 #include "Warrior/DataAssets/StartUpData/DataAsset_HeroStartUpData.h"
 
 #include "Warrior/AbilitySystem/WarriorAbilitySystemComponent.h"
-#include "Warrior/AbilitySystem/Abilities/WarriorGameplayAbility.h"
+#include "Warrior/AbilitySystem/Abilities/WarriorHeroGameplayAbility.h"
+#include "Warrior/WarriorTypes/WarriorStructTypes.h"
 
-bool FWarriorHeroAbilitySet::IsValid() const
-{
-	return inputTag.IsValid() && AbilityToGrant;
-}
+
 
 void UDataAsset_HeroStartUpData::GiveToAbilitySystemComponent(UWarriorAbilitySystemComponent* InASCToGive,
 	int32 ApplyLevel)
@@ -23,7 +21,7 @@ void UDataAsset_HeroStartUpData::GiveToAbilitySystemComponent(UWarriorAbilitySys
 		FGameplayAbilitySpec AbilitySpec(AbilitySet.AbilityToGrant);
 		AbilitySpec.SourceObject = InASCToGive->GetAvatarActor();
 		AbilitySpec.Level = ApplyLevel;
-		AbilitySpec.GetDynamicSpecSourceTags().AddTag(AbilitySet.inputTag);
+		AbilitySpec.GetDynamicSpecSourceTags().AddTag(AbilitySet.InputTag);
 		
 		InASCToGive->GiveAbility(AbilitySpec);
 	}

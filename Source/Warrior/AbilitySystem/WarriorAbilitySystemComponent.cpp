@@ -3,6 +3,10 @@
 
 #include "Warrior/AbilitySystem/WarriorAbilitySystemComponent.h"
 
+#include "Warrior/AbilitySystem/Abilities/WarriorHeroGameplayAbility.h"
+#include "GameplayTagContainer.h"
+#include "Warrior/WarriorTypes/WarriorStructTypes.h"
+
 void UWarriorAbilitySystemComponent::OnAbilityInputPressed(const FGameplayTag& InInputTag)
 {
 	if (!InInputTag.IsValid()) { return; }
@@ -16,4 +20,39 @@ void UWarriorAbilitySystemComponent::OnAbilityInputPressed(const FGameplayTag& I
 
 void UWarriorAbilitySystemComponent::OnAbilityInputReleased(const FGameplayTag& InInputTag)
 {
+}
+
+void UWarriorAbilitySystemComponent::GrantHeroWeaponABilities(
+	const TArray<FWarriorHeroAbilitySet>& InDefaultWeaponAbilities, int32 ApplyLevel,
+	TArray<FGameplayAbilitySpecHandle>& OutGrantedSpecHandles)
+{
+	if (InDefaultWeaponAbilities.IsEmpty()) { return; }
+	
+	for (const FWarriorHeroAbilitySet& AbilitySet: InDefaultWeaponAbilities)
+	{
+		if (!AbilitySet.IsValid()) { continue; }
+		
+		FGameplayAbilitySpec AbilitySpec(AbilitySet.AbilityToGrant);
+		AbilitySpec.SourceObject = GetAvatarActor();
+		AbilitySpec.Level = ApplyLevel;
+		AbilitySpec.GetDynamicSpecSourceTags().AddTag(AbilitySet.InputTag);
+		
+		OutGrantedSpecHandles.AddUnique(GiveAbility(AbilitySpec));
+		
+	}
+}
+
+void UWarriorAbilitySystemComponent::RemoveGrantedHeroWeaponAbilities(
+	TArray<FGameplayAbilitySpecHandle>& InSpecHandlesToRemove)
+{
+	if (InSpecHandlesToRemove.IsEmpty()) { return; }
+	
+	for (const FGameplayAbilitySpecHandle& SpecHandle: InSpecHandlesToRemove)
+	{
+		if (SpecHandle.IsValid())
+		{
+			ClearAbility(SpecHandle);
+		}
+	}
+	InSpecHandlesToRemove.Empty();
 }
