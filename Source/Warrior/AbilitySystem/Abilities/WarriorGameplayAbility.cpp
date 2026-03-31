@@ -3,6 +3,7 @@
 
 #include "Warrior/AbilitySystem/Abilities/WarriorGameplayAbility.h"
 
+#include "AbilitySystemBlueprintLibrary.h"
 #include "AbilitySystemComponent.h"
 #include "Warrior/AbilitySystem/WarriorAbilitySystemComponent.h"
 #include "Warrior/Components/Combat/PawnCombatComponent.h"
@@ -44,4 +45,29 @@ UPawnCombatComponent* UWarriorGameplayAbility::GetCombatComponentFromActorInfo()
 UWarriorAbilitySystemComponent* UWarriorGameplayAbility::GetWarriorAbilitySystemComponentFromActorInfo() const
 {
 	return Cast<UWarriorAbilitySystemComponent>(CurrentActorInfo->AbilitySystemComponent);
+}
+
+FActiveGameplayEffectHandle UWarriorGameplayAbility::NativeApplyEffectSpecHandleToTarget(AActor* TargetActor,
+	const FGameplayEffectSpecHandle& EffectSpecHandle)
+{
+	UAbilitySystemComponent* TargetASC = UAbilitySystemBlueprintLibrary::GetAbilitySystemComponent(TargetActor);
+	
+	checkf(TargetActor, TEXT("Invalid Target in %s"), *GetName());
+	checkf(TargetASC, TEXT("Invalid TargetASC in %s"), *GetName());
+	checkf(EffectSpecHandle.IsValid(), TEXT("Invalid Effect Spec Handle in %s"), *GetName());
+	
+	return GetWarriorAbilitySystemComponentFromActorInfo()->ApplyGameplayEffectSpecToTarget(
+		*EffectSpecHandle.Data,
+		TargetASC
+		);
+}
+
+FActiveGameplayEffectHandle UWarriorGameplayAbility::BP_ApplyEffectSpecHandleToTarget(AActor* TargetActor,
+	const FGameplayEffectSpecHandle& EffectSpecHandle, EWarriorSuccessType& OutSuccessType)
+{
+	checkf(TargetActor, TEXT("Invalid Target in %s BP"), *GetName());
+	checkf(EffectSpecHandle.IsValid(), TEXT("Invalid Effect Spec Handle in %s BP"), *GetName());
+	FActiveGameplayEffectHandle ActiveGameplayEffectHandle = NativeApplyEffectSpecHandleToTarget(TargetActor, EffectSpecHandle);
+	OutSuccessType = ActiveGameplayEffectHandle.WasSuccessfullyApplied() ? EWarriorSuccessType::Successful : EWarriorSuccessType::Failed;
+	return ActiveGameplayEffectHandle;
 }

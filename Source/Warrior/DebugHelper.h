@@ -21,4 +21,17 @@ namespace Debug
 		}
 	}
 	
+	static void PrintMessage(const FString &FloatTitle,const float Value, const FColor &Color = FColor::MakeRandomColor(), int32 InKey = -1, bool bLog = false)
+	{
+		if (GEngine)
+		{
+			const FString &FloatText = FloatTitle + TEXT(" : ") + FString::SanitizeFloat(Value);
+			GEngine->AddOnScreenDebugMessage(InKey, 5.f, Color, FloatText);
+			if (bLog)
+			{
+				UE_LOG(LogTemp, Warning, TEXT("%s"), *FloatText);
+			}
+		}
+	}
+	
 }
