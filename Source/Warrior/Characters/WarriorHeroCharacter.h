@@ -14,6 +14,7 @@ class USpringArmComponent;
 class UDataAsset_InputConfig;
 class UInputComponent;
 class UHeroCombatComponent;
+class UHeroUIComponentBase;
 /**
  *
  */
@@ -28,6 +29,11 @@ public:
 	//~ Begin IPawnCombatInterface Interface.
 	virtual UPawnCombatComponent* GetPawnCombatComponent() const override;
 	//~ End IPawnCombatInterface Interface.
+	
+	//~ Begin IPawnUIInterface Interface.
+	virtual UPawnUIComponentBase* GetPawnUIComponent() const override;
+	virtual UHeroUIComponentBase* GetHeroUIComponent() const override;
+	//~ Begin IPawnUIInterface Interface.
 	
 protected:
 	virtual void SetupPlayerInputComponent(UInputComponent* PlayerInputComponent) override;
@@ -48,6 +54,9 @@ private:
 	
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Combat", meta = (AllowPrivateAccess = "true"))
 	UHeroCombatComponent* HeroCombatComponent;
+	
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "UI", meta = (AllowPrivateAccess = "true"))
+	UHeroUIComponentBase* HeroUIComponent;
 	
 #pragma endregion
 	
