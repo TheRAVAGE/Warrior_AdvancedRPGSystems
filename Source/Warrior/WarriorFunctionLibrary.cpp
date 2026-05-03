@@ -5,6 +5,7 @@
 
 #include "Warrior/AbilitySystem/WarriorAbilitySystemComponent.h"
 #include "AbilitySystemBlueprintLibrary.h"
+#include "GenericTeamAgentInterface.h"
 #include "Interfaces/PawnCombatInterface.h"
 #include "WarriorTypes/WarriorEnumTypes.h"
 
@@ -61,4 +62,23 @@ UPawnCombatComponent* UWarriorFunctionLibrary::BP_GetPawnCombatComponentFromActo
 	UPawnCombatComponent* CombatComponent = NativeGetPawnCombatComponentFromActor(InActor);
 	OutValidType = CombatComponent ? EWarriorValidType::Valid : EWarriorValidType::Invalid;
 	return CombatComponent;
+}
+
+bool UWarriorFunctionLibrary::IsTargetHostile(APawn* QueryPawn, APawn* TargetPawn)
+{
+	checkf(QueryPawn && TargetPawn, TEXT("InActor passed to IsTargetHostile was null!"));
+	
+	IGenericTeamAgentInterface* QueryTeamInterface = Cast<IGenericTeamAgentInterface>(QueryPawn->GetController());
+	IGenericTeamAgentInterface* TargetTeamInterface = Cast<IGenericTeamAgentInterface>(TargetPawn->GetController());
+	
+	if (QueryTeamInterface && TargetTeamInterface)
+	{
+		return QueryTeamInterface->GetGenericTeamId() != TargetTeamInterface->GetGenericTeamId();
+	}
+	return false;
+}
+
+float UWarriorFunctionLibrary::GetScalableFloatValueAtLevel(FScalableFloat InScalableFloat, int32 InLevel)
+{
+	return InScalableFloat.GetValueAtLevel(InLevel);
 }

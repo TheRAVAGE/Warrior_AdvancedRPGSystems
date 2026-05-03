@@ -12,6 +12,7 @@ namespace WarriorGameplayTags
 	WARRIOR_API UE_DEFINE_GAMEPLAY_TAG(Input_UnEquipAxe, "Input.UnEquipAxe");
 	WARRIOR_API UE_DEFINE_GAMEPLAY_TAG(Input_LightAttack_Axe, "Input.LightAttack.Axe");
 	WARRIOR_API UE_DEFINE_GAMEPLAY_TAG(Input_HeavyAttack_Axe, "Input.HeavyAttack.Axe");
+	WARRIOR_API UE_DEFINE_GAMEPLAY_TAG(Input_Roll, "Input.Roll");
 	
 	//Player Tags
 	//Player - Weeapon Tags
@@ -23,6 +24,7 @@ namespace WarriorGameplayTags
 	WARRIOR_API UE_DEFINE_GAMEPLAY_TAG(Player_Ability_Attack_Light_Axe, "Player.Ability.Attack.Light.Axe");
 	WARRIOR_API UE_DEFINE_GAMEPLAY_TAG(Player_Ability_Attack_Heavy_Axe, "Player.Ability.Attack.Heavy.Axe");
 	WARRIOR_API UE_DEFINE_GAMEPLAY_TAG(Player_Ability_HitPause, "Player.Ability.HitPause");
+	WARRIOR_API UE_DEFINE_GAMEPLAY_TAG(Player_Ability_Roll, "Player.Ability.Roll");
 	
 	//Player - Event Tags
 	WARRIOR_API UE_DEFINE_GAMEPLAY_TAG(Player_Event_Equip_Axe, "Player.Event.Equip.Axe");
@@ -31,6 +33,7 @@ namespace WarriorGameplayTags
 	
 	//Player - Status Tags
 	WARRIOR_API UE_DEFINE_GAMEPLAY_TAG(Player_Status_JumpToFinisher, "Player.Status.JumpToFinisher");
+	WARRIOR_API UE_DEFINE_GAMEPLAY_TAG(Player_Status_Rolling, "Player.Status.Rolling");
 	
 	//Player - Attack Type Tags
 	WARRIOR_API UE_DEFINE_GAMEPLAY_TAG(Player_SetByCaller_AttackType_Light, "Player.SetByCaller.AttackType.Light");
@@ -43,6 +46,10 @@ namespace WarriorGameplayTags
 	
 	//Enemy - Weapon Tags
 	WARRIOR_API UE_DEFINE_GAMEPLAY_TAG(Enemy_Weapon, "Enemy.Weapon");
+	
+	//Enemy - Status Tags
+	WARRIOR_API UE_DEFINE_GAMEPLAY_TAG(Enemy_Status_Strafing, "Enemy.Status.Strafing");
+	WARRIOR_API UE_DEFINE_GAMEPLAY_TAG(Enemy_Status_UnderAttack, "Enemy.Status.UnderAttack");
 	
 	//Shared Tags
 	//Shared - Ability Tags

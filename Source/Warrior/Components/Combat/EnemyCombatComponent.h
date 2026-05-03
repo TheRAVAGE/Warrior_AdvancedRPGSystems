@@ -14,4 +14,7 @@ class WARRIOR_API UEnemyCombatComponent : public UPawnCombatComponent
 {
 	GENERATED_BODY()
 	
+public:
+	void OnHitTargetAActor(AActor* HitActor) override;
+	
 };
